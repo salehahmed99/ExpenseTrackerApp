@@ -2,15 +2,20 @@ import { Pressable, View, Text, StyleSheet } from "react-native";
 import { Colors } from "../../constants/colors";
 
 function Button({ children, mode, onPress }) {
+  const isConfirm = mode === "confirm";
   return (
-    <Pressable onPress={onPress} style={({pressed}) => [styles.pressable , pressed && styles.buttonPressed] }>
-      <View style={[styles.button, mode === "confirm" && styles.buttonConfirm]}>
-        <Text
-          style={mode === "confirm" ? styles.textConfirm : styles.textCancel}
-        >
-          {children}
-        </Text>
-      </View>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.button,
+        isConfirm && styles.buttonConfirm,
+        pressed && styles.buttonPressed,
+        pressed && !isConfirm && styles.buttonPressedCancel,
+      ]}
+    >
+      <Text style={isConfirm ? styles.textConfirm : styles.textCancel}>
+        {children}
+      </Text>
     </Pressable>
   );
 }
@@ -22,21 +27,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius:8,
+    borderRadius: 8,
   },
   buttonConfirm: {
     backgroundColor: Colors.primary500,
+  },
+  buttonPressed: {
+    opacity: 0.5,
+  },
+  buttonPressedCancel: {
+    backgroundColor: Colors.primary50,
   },
   textCancel: {
     color: Colors.primary200,
   },
   textConfirm: {
     color: "white",
-  },
-  pressable: {
-    flex: 1,
-  },
-  buttonPressed: {
-    opacity: 0.5,
   },
 });
